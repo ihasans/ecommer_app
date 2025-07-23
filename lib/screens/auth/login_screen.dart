@@ -1,9 +1,9 @@
-import 'package:ecommerce_app/screens/auth/forget_screen.dart';
-import 'package:ecommerce_app/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/app_constant.dart';
+import 'forget_screen.dart';
+import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
