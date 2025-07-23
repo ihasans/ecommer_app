@@ -1,5 +1,9 @@
+import 'package:ecommer_easy_app/controllers/sign_in_controller.dart';
+import 'package:ecommer_easy_app/screens/homeScreen/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../utils/app_constant.dart';
 import 'forget_screen.dart';
@@ -13,6 +17,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  SignInController signInController = Get.put(SignInController());
+  TextEditingController userEmailController = TextEditingController();
+  TextEditingController userPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.white,
                       ),
                       child: TextFormField(
+                        controller: userEmailController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Email',
@@ -87,14 +95,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(6.sp),
                         color: Colors.white,
                       ),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Password',
-                          // hintStyle: body2Text,
-                          suffixIcon: IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.visibility, color: Colors.grey),
+                      child: Obx(
+                        () => TextFormField(
+                          controller: userPasswordController,
+                          obscureText: signInController.isPasswordVisible.value,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Password',
+                            // hintStyle: body2Text,
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                signInController.isPasswordVisible.toggle();
+                              },
+                              icon: signInController.isPasswordVisible.value
+                                  ? Icon(Icons.visibility, color: Colors.grey)
+                                  : Icon(
+                                      Icons.visibility_off,
+                                      color: Colors.grey,
+                                    ),
+                            ),
                           ),
                         ),
                       ),
@@ -107,7 +126,30 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: double.infinity,
                 height: 40.h,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    String userEmail = userEmailController.text.trim();
+                    String userPassword = userPasswordController.text.trim();
+
+                    if (userEmail.isEmpty || userPassword.isEmpty) {
+                      Get.snackbar('Error', 'Please enter all detail');
+                    } else {
+                      UserCredential? userCredential = await signInController
+                          .signInMethod(userEmail, userPassword);
+                      if (userCredential != null) {
+                        if (userCredential.user!.emailVerified) {
+                          Get.snackbar('Succus ', 'Login successfully');
+                          Get.offAll(HomeScreen());
+                        } else {
+                          Get.snackbar(
+                            'Error',
+                            'Please verify your email before login',
+                          );
+                        }
+                      } else {
+                        Get.snackbar('Error', 'Please try again');
+                      }
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppConstant.appMainColor, // Button color
                     shape: RoundedRectangleBorder(
