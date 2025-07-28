@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommer_easy_app/controllers/get_device_token_controller.dart';
 import 'package:ecommer_easy_app/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,9 @@ class SignUpController extends GetxController {
     String userPassword,
     String userDeviceToken,
   ) async {
+    GetDeviceTokenController getDeviceTokenController = Get.put(
+      GetDeviceTokenController(),
+    );
     try {
       // loading ? CircularProgressIndicator(backgroundColor: Colors.amber) : null;
       isLoading.value = true;
@@ -36,7 +40,7 @@ class SignUpController extends GetxController {
         email: userEmail,
         phone: userPhone,
         userImg: '',
-        userDeviceToken: userDeviceToken,
+        userDeviceToken: getDeviceTokenController.deviceToken.toString(),
         country: '',
         userAddress: '',
         street: '',

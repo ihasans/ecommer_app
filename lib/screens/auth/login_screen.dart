@@ -1,4 +1,8 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:ecommer_easy_app/controllers/sign_in_controller.dart';
+import 'package:ecommer_easy_app/controllers/user_get_data_controller.dart';
+import 'package:ecommer_easy_app/screens/adminScreen/admin_screen.dart';
 import 'package:ecommer_easy_app/screens/homeScreen/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +22,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   SignInController signInController = Get.put(SignInController());
+
+  UserGetDataController userGetDataController = Get.put(
+    UserGetDataController(),
+  );
   TextEditingController userEmailController = TextEditingController();
   TextEditingController userPasswordController = TextEditingController();
   @override
@@ -135,10 +143,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     } else {
                       UserCredential? userCredential = await signInController
                           .signInMethod(userEmail, userPassword);
+
+                      var userData = await userGetDataController.getUserData(
+                        userCredential!.user!.uid,
+                      );
                       if (userCredential != null) {
                         if (userCredential.user!.emailVerified) {
-                          Get.snackbar('Succus ', 'Login successfully');
-                          Get.offAll(HomeScreen());
+                          if (userData[0]['isAdmin'] == true) {
+                            Get.snackbar(
+                              'Succus ',
+                              'Login successfully Admin Page',
+                            );
+                            Get.offAll(AdminScreen());
+                          } else {
+                            Get.snackbar(
+                              'Succus ',
+                              'Login successfull Home Page',
+                            );
+                            Get.offAll(HomeScreen());
+                          }
                         } else {
                           Get.snackbar(
                             'Error',

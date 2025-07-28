@@ -1,5 +1,8 @@
+import 'package:ecommer_easy_app/controllers/forget_controller.dart';
+import 'package:ecommer_easy_app/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class ForgetScreen extends StatefulWidget {
   const ForgetScreen({super.key});
@@ -9,6 +12,8 @@ class ForgetScreen extends StatefulWidget {
 }
 
 class _ForgetScreenState extends State<ForgetScreen> {
+  ForgetController forgetController = Get.put(ForgetController());
+  TextEditingController userEmailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +49,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                         color: Colors.white,
                       ),
                       child: TextFormField(
+                        controller: userEmailController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Email',
@@ -55,11 +61,22 @@ class _ForgetScreenState extends State<ForgetScreen> {
                 ),
               ),
               SizedBox(height: 40.h),
+              // Obx(
+              //   () =>
+              // ),
               SizedBox(
                 width: double.infinity,
                 height: 45,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    String userEmail = userEmailController.text.trim();
+                    if (userEmail.isEmpty) {
+                      Get.snackbar('Error', 'Please Enter Email');
+                    } else {
+                      forgetController.forgetPasswordMethod(userEmail);
+                      Get.offAll(LoginScreen());
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueGrey, // Button color
                     shape: RoundedRectangleBorder(
