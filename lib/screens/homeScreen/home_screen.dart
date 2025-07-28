@@ -42,7 +42,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
-        child: Column(children: [BannerWidget(), Text('ALi')]),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.h),
+              child: BannerWidget(),
+            ),
+          ],
+        ),
       ),
     );
   }
