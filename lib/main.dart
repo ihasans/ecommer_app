@@ -1,4 +1,4 @@
-import 'package:ecommer_easy_app/screens/homeScreen/home_screen.dart';
+import 'package:ecommer_easy_app/userPannel/homeScreen/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

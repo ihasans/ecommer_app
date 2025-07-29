@@ -23,4 +23,14 @@ class AppConstant {
     color: appStatusBarColor,
     fontWeight: FontWeight.w400,
   );
+  static const subTitleText2 = TextStyle(
+    fontSize: 14,
+    color: appSecondoryColor,
+    fontWeight: FontWeight.w400,
+  );
+  static const subTitleText3 = TextStyle(
+    fontSize: 14,
+    color: appMainColor,
+    fontWeight: FontWeight.w400,
+  );
 }
