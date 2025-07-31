@@ -1,3 +1,4 @@
+import 'package:ecommer_easy_app/userPannel/allFlashSaleScreen/allFlashSaleScreen.dart';
 import 'package:ecommer_easy_app/utils/app_constant.dart';
 import 'package:ecommer_easy_app/widgets/categories_widget.dart';
 import 'package:ecommer_easy_app/widgets/custom_drawar_widgets.dart';
@@ -69,7 +70,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: 'Flash Sale',
                 subTitle: 'According to your buget',
                 buttonString: 'Show more >',
-                onTap: () {},
+                onTap: () {
+                  Get.to(AllFlashSaleScreen());
+                },
               ),
               SizedBox(height: 10.h),
               FlashSaleWidget(),

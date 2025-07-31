@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommer_easy_app/models/categories_model.dart';
+import 'package:ecommer_easy_app/userPannel/singleCategoryProductScreen/single_category_product_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 
 // Fetch Data From FirebaseFirestore through Future Builder...........
@@ -43,16 +45,25 @@ class CategoriesWidget extends StatelessWidget {
                   children: [
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 4.w),
-                      child: FillImageCard(
-                        borderRadius: 20.r,
-                        width: 100,
-                        heightImage: 60.h,
-                        imageProvider: CachedNetworkImageProvider(
-                          categoriesModel.categoryImg,
-                        ),
-                        tags: [],
-                        title: Center(
-                          child: Text(categoriesModel.categoryName),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.to(
+                            SingleCategoryProductScreen(
+                              categoryId:
+                                  snapshot.data!.docs[index]['categoryId'],
+                            ),
+                          );
+                        },
+                        child: FillImageCard(
+                          borderRadius: 20.r,
+                          width: 100,
+                          heightImage: 60.h,
+                          imageProvider: CachedNetworkImageProvider(
+                            categoriesModel.categoryImg,
+                          ),
+                          title: Center(
+                            child: Text(categoriesModel.categoryName),
+                          ),
                         ),
                       ),
                     ),
