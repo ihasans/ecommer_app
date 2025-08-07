@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:ecommer_easy_app/controllers/user_get_data_controller.dart';
 import 'package:ecommer_easy_app/screens/adminScreen/admin_screen.dart';
-import 'package:ecommer_easy_app/userPannel/homeScreen/home_screen.dart';
+import 'package:ecommer_easy_app/screens/userPannel/homeScreen/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

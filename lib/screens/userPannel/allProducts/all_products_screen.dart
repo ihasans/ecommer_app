@@ -1,28 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommer_easy_app/models/categories_model.dart';
-import 'package:ecommer_easy_app/userPannel/singleCategoryProductScreen/single_category_product_screen.dart';
+import 'package:ecommer_easy_app/models/product_model.dart';
 import 'package:ecommer_easy_app/utils/app_constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 
-class AllCategoryScreen extends StatefulWidget {
-  const AllCategoryScreen({super.key});
+class AllProductsScreen extends StatefulWidget {
+  const AllProductsScreen({super.key});
 
   @override
-  State<AllCategoryScreen> createState() => _AllCategoryScreenState();
+  State<AllProductsScreen> createState() => _AllProductsScreenState();
 }
 
-class _AllCategoryScreenState extends State<AllCategoryScreen> {
+class _AllProductsScreenState extends State<AllProductsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppConstant.appMainColor,
-        title: Text('All Cagetories'),
+        title: Text('All Product'),
       ),
 
       body: SingleChildScrollView(
@@ -30,7 +28,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.w),
           child: FutureBuilder(
-            future: FirebaseFirestore.instance.collection('categories').get(),
+            future: FirebaseFirestore.instance.collection('products').get(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
                 return Center(child: Text('Error'));
@@ -40,7 +38,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
               }
 
               if (snapshot.data!.docs.isEmpty) {
-                return Center(child: Text('No category found'));
+                return Center(child: Text('No All Product found'));
               }
               if (snapshot.data != null) {
                 return GridView.builder(
@@ -53,36 +51,38 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 14.w,
                     mainAxisSpacing: 10.h,
-                    childAspectRatio: 1.2,
+                    childAspectRatio: 0.8.h,
                   ),
                   itemBuilder: (context, index) {
-                    CategoriesModel categoriesModel = CategoriesModel(
-                      categoryId: snapshot.data!.docs[index]['categoryId'],
-                      categoryImg: snapshot.data!.docs[index]['categoryImage'],
-                      categoryName: snapshot.data!.docs[index]['categoryName'],
-                      createdAt: snapshot.data!.docs[index]['createAt'],
-                      updatedAt: snapshot.data!.docs[index]['updateAt'],
+                    final productData = snapshot.data!.docs[index];
+                    ProductModel productModel = ProductModel(
+                      productId: productData['productId'],
+                      categoryId: productData['categoryId'],
+                      productName: productData['productName'],
+                      categoryName: productData['categoryName'],
+                      salePrice: productData['salePrice'],
+                      fullPrice: productData['fullPrice'],
+                      productImages: productData['productImage'],
+                      deliveryTime: productData['deliveryTime'],
+                      isSale: productData['isSale'],
+                      productDescription: productData['productDescription'],
+                      createdAt: productData['createAt'],
+                      updatedAt: productData['updateAt'],
                     );
 
                     return GestureDetector(
-                      onTap: () {
-                        Get.to(
-                          SingleCategoryProductScreen(
-                            categoryId:
-                                snapshot.data!.docs[index]['categoryId'],
-                          ),
-                        );
-                      },
+                      onTap: () {},
                       child: FillImageCard(
                         borderRadius: 20.r,
                         width: double.infinity,
                         heightImage: 70.h,
                         imageProvider: CachedNetworkImageProvider(
-                          categoriesModel.categoryImg,
+                          productModel.productImages[0],
                         ),
-                        tags: [],
-                        title: Center(
-                          child: Text(categoriesModel.categoryName),
+
+                        title: Center(child: Text(productModel.productName)),
+                        footer: Center(
+                          child: Text('Rs: ${productModel.fullPrice}'),
                         ),
                       ),
                     );

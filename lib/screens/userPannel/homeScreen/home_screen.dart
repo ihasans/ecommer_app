@@ -1,4 +1,5 @@
-import 'package:ecommer_easy_app/userPannel/allFlashSaleScreen/allFlashSaleScreen.dart';
+import 'package:ecommer_easy_app/screens/userPannel/allFlashSaleScreen/allFlashSaleScreen.dart';
+import 'package:ecommer_easy_app/screens/userPannel/allProducts/all_products_screen.dart';
 import 'package:ecommer_easy_app/utils/app_constant.dart';
 import 'package:ecommer_easy_app/widgets/categories_widget.dart';
 import 'package:ecommer_easy_app/widgets/custom_drawar_widgets.dart';
@@ -8,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../screens/auth/login_screen.dart';
+import '../../auth/login_screen.dart';
+import '../../../widgets/all_products_widget.dart';
 import '../allCategoryScreen/all_category_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -76,6 +78,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(height: 10.h),
               FlashSaleWidget(),
+              SizedBox(height: 20.h),
+              HeadingWidget(
+                title: 'All Products',
+                subTitle: 'According to your buget',
+                buttonString: 'Show more >',
+                onTap: () {
+                  Get.to(AllProductsScreen());
+                },
+              ),
+              SizedBox(height: 10.h),
+              AllProductsWidget(),
             ],
           ),
         ),

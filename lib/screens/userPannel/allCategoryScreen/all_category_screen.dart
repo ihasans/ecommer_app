@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommer_easy_app/models/product_model.dart';
-import 'package:ecommer_easy_app/userPannel/singleCategoryProductScreen/single_category_product_screen.dart';
+import 'package:ecommer_easy_app/models/categories_model.dart';
+import 'package:ecommer_easy_app/screens/userPannel/singleCategoryProductScreen/single_category_product_screen.dart';
 import 'package:ecommer_easy_app/utils/app_constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,20 +9,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 
-class AllFlashSaleScreen extends StatefulWidget {
-  const AllFlashSaleScreen({super.key});
+class AllCategoryScreen extends StatefulWidget {
+  const AllCategoryScreen({super.key});
 
   @override
-  State<AllFlashSaleScreen> createState() => _AllFlashSaleScreenState();
+  State<AllCategoryScreen> createState() => _AllCategoryScreenState();
 }
 
-class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
+class _AllCategoryScreenState extends State<AllCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppConstant.appMainColor,
-        title: Text('Flash Sale Product'),
+        title: Text('All Cagetories'),
       ),
 
       body: SingleChildScrollView(
@@ -30,10 +30,7 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.w),
           child: FutureBuilder(
-            future: FirebaseFirestore.instance
-                .collection('products')
-                .where('isSale', isEqualTo: true)
-                .get(),
+            future: FirebaseFirestore.instance.collection('categories').get(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
                 return Center(child: Text('Error'));
@@ -43,7 +40,7 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
               }
 
               if (snapshot.data!.docs.isEmpty) {
-                return Center(child: Text('No Sale Product found'));
+                return Center(child: Text('No category found'));
               }
               if (snapshot.data != null) {
                 return GridView.builder(
@@ -56,23 +53,15 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 14.w,
                     mainAxisSpacing: 10.h,
-                    childAspectRatio: 0.8.h,
+                    childAspectRatio: 1.2,
                   ),
                   itemBuilder: (context, index) {
-                    final productData = snapshot.data!.docs[index];
-                    ProductModel productModel = ProductModel(
-                      productId: productData['productId'],
-                      categoryId: productData['categoryId'],
-                      productName: productData['productName'],
-                      categoryName: productData['categoryName'],
-                      salePrice: productData['salePrice'],
-                      fullPrice: productData['fullPrice'],
-                      productImages: productData['productImage'],
-                      deliveryTime: productData['deliveryTime'],
-                      isSale: productData['isSale'],
-                      productDescription: productData['productDescription'],
-                      createdAt: productData['createAt'],
-                      updatedAt: productData['updateAt'],
+                    CategoriesModel categoriesModel = CategoriesModel(
+                      categoryId: snapshot.data!.docs[index]['categoryId'],
+                      categoryImg: snapshot.data!.docs[index]['categoryImage'],
+                      categoryName: snapshot.data!.docs[index]['categoryName'],
+                      createdAt: snapshot.data!.docs[index]['createAt'],
+                      updatedAt: snapshot.data!.docs[index]['updateAt'],
                     );
 
                     return GestureDetector(
@@ -89,12 +78,11 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
                         width: double.infinity,
                         heightImage: 70.h,
                         imageProvider: CachedNetworkImageProvider(
-                          productModel.productImages[0],
+                          categoriesModel.categoryImg,
                         ),
-
-                        title: Center(child: Text(productModel.productName)),
-                        footer: Center(
-                          child: Text('Rs: ${productModel.fullPrice}'),
+                        tags: [],
+                        title: Center(
+                          child: Text(categoriesModel.categoryName),
                         ),
                       ),
                     );

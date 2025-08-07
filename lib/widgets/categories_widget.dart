@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommer_easy_app/models/categories_model.dart';
-import 'package:ecommer_easy_app/userPannel/singleCategoryProductScreen/single_category_product_screen.dart';
+import 'package:ecommer_easy_app/screens/userPannel/singleCategoryProductScreen/single_category_product_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
